@@ -208,7 +208,9 @@ class MysqlRedisAsync {
     return new Promise(async (resolve, reject) => {
       options = options || (!Array.isArray(values) ? values : null);
 
-      const _s = sql + JSON.stringify(values);
+      // not all options like in original - because if we use it - also caching mode will be affecting id of cache entry - which is BUG IMHO
+      const _s = sql + JSON.stringify(values['keyPrefix']+values['expire']);
+
       const prefix =
         (options && options.keyPrefix) || this.cacheOptions.keyPrefix;
 
